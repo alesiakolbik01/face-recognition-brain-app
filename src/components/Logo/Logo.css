@@ -1,0 +1,7 @@
+.logo-image {
+    background: linear-gradient(90deg, rgb(167 189 226) 0%, rgb(231 228 182) 100%);
+    width:90px;
+    border-radius: 20px;
+    border: solid 2px white;
+    padding: 15px;
+}
