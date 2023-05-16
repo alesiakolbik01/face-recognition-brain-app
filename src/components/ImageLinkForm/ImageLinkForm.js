@@ -24,10 +24,6 @@ const ImageLinkForm = ({ handleSubmit }) => {
         }
     }
 
-    const onHandleClear = () => {
-        setInputState('');
-    }
-
     return (
         <div>
             <p className='f3 tc'>
