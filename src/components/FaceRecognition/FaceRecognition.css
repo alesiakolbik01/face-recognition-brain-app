@@ -1,0 +1,21 @@
+.image {
+    max-width: 600px;
+    width: 100%;
+}
+
+.ab-ct {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.bounding-box {
+    position: absolute;
+    box-shadow: 0 0 0px 2px #4669f6 inset;
+    display: flex;
+}
+
+@media screen and (max-width: 700px) {
+    .image {
+        max-width: 100%;
+    }
+}
