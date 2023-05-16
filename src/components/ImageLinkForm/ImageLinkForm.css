@@ -14,3 +14,10 @@ button {
     background-color: slategray;
     background-size:75px 100px;
 }
+
+.error-message {
+    color: red;
+    font-size: 1rem;
+    padding: 10px;
+    text-align: center;
+}
