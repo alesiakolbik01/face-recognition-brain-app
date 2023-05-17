@@ -5,6 +5,7 @@ import ImageLinkForm from '../ImageLinkForm/ImageLinkForm';
 import Rank from '../Rank/Rank';
 import FaceRecognition from '../FaceRecognition/FaceRecognition';
 import ParticlesBg from 'particles-bg';
+import './HomePage.css'
 
 const clarifaiDataInit = {
     API_KEY: '1df95d8e43544eeea5a8323f85dc6b24',
@@ -86,14 +87,16 @@ class HomePage extends React.Component {
     }
 
     render() {
+        const { boxData, imageUrl } = this.state;
+        const { logOut } = this.props;
         return (
         <div className = "home">
-            <ParticlesBg color = "#ff0000" type = "cobweb" bg = {true} />
-            <Navigation />
+            <ParticlesBg color = "#6e6e6e" type = "cobweb" bg = {true} />
+            <Navigation  logOut={ logOut }/>
             <Logo />
             <Rank />
             <ImageLinkForm handleSubmit = {this.onHandelSubmit} />
-            <FaceRecognition imageUrl = {this.state.imageUrl} boxData = {this.state.boxData} />
+            <FaceRecognition imageUrl = {imageUrl} boxData = {boxData} />
         </div>
         );
     }
