@@ -1,6 +1,6 @@
 import './App.css';
 import 'tachyons';
-import React from 'react';
+import { useState } from 'react';
 import { Routes, Route, Navigate } from "react-router-dom";
 import Protected from './components/Protected/Protected';
 
@@ -10,44 +10,33 @@ import Register from './components/Register/Register';
 
 const App = () => {
 
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [userData, setuserData] = React.useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
 
-  const logIn = (data) => {
-    if(validateUserData(data))
-    {
-      setIsLoggedIn(true);
-      setuserData(data);
-    }
+  const logIn = (value, userId) => {
+      setIsLoggedIn(value);
+      setUserId(userId)
   };
 
-  const registerUser = (data) => {
-    if(validateUserData(data))
-    {
-      setIsLoggedIn(true);
-      setuserData(data);
-    }
+  const registerUser = (value, userId) => {
+    setIsLoggedIn(value);
+    setUserId(userId);
   }
 
   const logOut = () => {
     setIsLoggedIn(false);
-    setuserData(null);
   };
-
-  const validateUserData = (data) => {
-    return (data.email && data.password)
-  }
 
   return (
     <Routes>
        <Route path='/'
          element={
            <Protected isLoggedIn={isLoggedIn} logIn={logIn}>
-             <HomePage logOut={logOut} />
+             <HomePage userId={userId} logOut={logOut} />
            </Protected>
          }
        />
-      <Route path='/register' element={userData ? <Navigate to="/" /> : <Register registerUser={registerUser}/>}/>
+      <Route path='/register' element={userId ? <Navigate to="/" /> : <Register registerUser={registerUser}/>}/>
     </Routes>
   )
 }

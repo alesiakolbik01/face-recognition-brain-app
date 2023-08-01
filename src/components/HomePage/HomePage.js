@@ -22,8 +22,13 @@ class HomePage extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-        imageUrl : null,
-        boxData: []
+            imageUrl : null,
+            boxData: [],
+            userData: {
+                name: '',
+                entries: 0,
+                joined: null
+            }
         }
     }
 
@@ -58,7 +63,10 @@ class HomePage extends React.Component {
         this.setState({imageUrl: value});
         fetch("https://api.clarifai.com/v2/models/" + clarifaiDataInit.MODEL_ID + "/versions/" + clarifaiDataInit.MODEL_VERSION_ID + "/outputs", this.getOptionsClarifai(value))
         .then(response => response.json())
-        .then(result => this.setBoxPoints(result.outputs[0].data.regions)
+        .then((result) => {
+                this.setBoxPoints(result.outputs[0].data.regions);
+                this.updateEntriesCount();
+            }
         )
         .catch(error => console.log('error', error));
     }
@@ -86,6 +94,45 @@ class HomePage extends React.Component {
         return result;
     }
 
+    componentDidMount(){
+        if(this.props.userId){
+            fetch('http://localhost:3000/profile/'+ this.props.userId)
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                if(data.status === "success")
+                {
+                    this.setState({userData: {name: data.name, entries: data.entries, joined: data.joined}})
+                }
+                else{
+                    this.props.logOut();
+                }
+            })
+            .catch((error) => {
+                this.props.logOut();
+                console.log(error);
+            })
+        }
+    }
+
+    updateEntriesCount(){
+        fetch('http://localhost:3000/image', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id: this.props.userId})
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then(data => {
+            if(data === 'success')
+            {
+                this.setState((prevState) => ({userData:{...prevState.userData, entries: prevState.userData.entries + 1}}))
+            }
+        })
+    }
+
     render() {
         const { boxData, imageUrl } = this.state;
         const { logOut } = this.props;
@@ -94,7 +141,7 @@ class HomePage extends React.Component {
             <ParticlesBg color = "#6e6e6e" type = "cobweb" bg = {true} />
             <Navigation  logOut={ logOut }/>
             <Logo />
-            <Rank />
+            <Rank userData={ this.state.userData }/>
             <ImageLinkForm handleSubmit = {this.onHandelSubmit} />
             <FaceRecognition imageUrl = {imageUrl} boxData = {boxData} />
         </div>

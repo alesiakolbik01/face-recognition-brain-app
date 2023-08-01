@@ -1,21 +1,66 @@
-import React from "react";
+import { useState } from "react";
 import ParticlesBg from "particles-bg";
 
 
 const Register = ({registerUser}) => {
 
-    const [dataForm, setDataForm] = React.useState({});
+    const [dataForm, setDataForm] = useState({});
+    const [error, setError] = useState('');
 
     const handleSendForm = (e) => {
         e.preventDefault();
-        registerUser(dataForm);
+        if(validateUserData(dataForm))
+        {
+            handleRegisterUser();
+        }else
+        {
+            setError('all fields must be filled');
+        }
     }
 
-    const handleInputName = (e) => setDataForm({...dataForm, name: e.target.value})
+    const validateUserData = (data) => {
+        return (data.email && data.password && data.name)
+    }
 
-    const handleInputEmail = (e) => setDataForm({...dataForm, email: e.target.value})
+    const handleRegisterUser = () => {
+        fetch('http://localhost:3000/register', {
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                "name": dataForm.name,
+                "email": dataForm.email,
+                "password": dataForm.password
+            })
+        })
+        .then((response) => {
+            return response.json()
+        })
+        .then( (data) => {
+            if(data.status === "success")
+            {
+                registerUser(true, data.insertedId);
+            }
+            else
+            {
+                setError(data.error);
+            }
+        })
+    }
 
-    const handleInputPassword = (e) => setDataForm({...dataForm, password: e.target.value})
+    const handleInputName = (e) => {
+        setDataForm({...dataForm, name: e.target.value});
+        setError('');
+    }
+
+    const handleInputEmail = (e) => {
+        setDataForm({...dataForm, email: e.target.value});
+        setError('');
+    }
+
+    const handleInputPassword = (e) => {
+        setDataForm({...dataForm, password: e.target.value});
+        setError('');
+    }
 
     return (
         <>
@@ -26,18 +71,19 @@ const Register = ({registerUser}) => {
                     <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
                     <div className="mt3">
                         <label className="db fw4 lh-copy f6" htmlFor="name">Name</label>
-                        <input className="pa2 input-reset ba bg-transparent w-100 measure" type="text" name="name"  id="name" onInput={handleInputName}/>
+                        <input className="pa2 input-reset ba bg-transparent w-100 measure" required type="text" name="name"  id="name" onInput={handleInputName}/>
                     </div>
                     <div className="mt3">
                         <label className="db fw4 lh-copy f6" htmlFor="email-address">Email address</label>
-                        <input className="pa2 input-reset ba bg-transparent w-100 measure" type="email" name="email-address"  id="email-address" onInput={handleInputEmail}/>
+                        <input className="pa2 input-reset ba bg-transparent w-100 measure" required type="email" name="email-address"  id="email-address" onInput={handleInputEmail}/>
                     </div>
                     <div className="mt3">
                         <label className="db fw4 lh-copy f6" htmlFor="password">Password</label>
-                        <input className="b pa2 input-reset ba bg-transparent" type="password" name="password"  id="password" onInput={handleInputPassword}/>
+                        <input className="b pa2 input-reset ba bg-transparent" required type="password" name="password"  id="password" onInput={handleInputPassword}/>
                     </div>
                     </fieldset>
                     <div className="mt3"><input className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6" type="submit" value="Send" onClick={handleSendForm}/></div>
+                    {error && <div className="mt3 red">{error}</div>}
                 </form>
             </article>
         </>

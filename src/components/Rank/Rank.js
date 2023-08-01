@@ -1,13 +1,13 @@
 import './Rank.css';
 
-const Rank = () => {
+const Rank = ({ userData }) => {
     return (
        <div className="tc">
             <div className="white tx-sh f3">
-                { 'Andrei, your current rank is ...' }
+                { `${userData.name}, your current rank is ...` }
             </div>
             <div className="white tx-sh f1">
-                { '#5' }
+                { `#${userData.entries}` }
             </div>
        </div>
     )

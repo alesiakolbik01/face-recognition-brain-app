@@ -1,16 +1,53 @@
-import React from "react";
+import { useState } from "react";
 import {
     Link,
   } from 'react-router-dom';
 
 
-const SignIn = ({logIn}) => {
+const SignIn = ({ logIn }) => {
 
-    const [dataForm, setDataForm] = React.useState({});
+    const [dataForm, setDataForm] = useState({});
+    const [error, setError] = useState('');
+  
+    const handlelogIn = (data) => {
+      if(validateUserData(data))
+      {
+        fetch('http://localhost:3000/signin', {
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                "email": data.email,
+                "password": data.password
+            })
+        })
+        .then((response) => {
+            return response.json()
+        })
+        .then((data) => {
+            if(data.error)
+            {
+                setError(data.error)
+            }
+            else if(data.status === "success")
+            {
+                setError('');
+                logIn(true, data.userId);
+            }
+        })
+        .catch((error) => {
+            setError(error)
+        })
+       
+      }
+    };
+
+    const validateUserData = (data) => {
+        return (data.email && data.password)
+    }
 
     const handleSendForm = (e) => {
         e.preventDefault();
-        logIn(dataForm);
+        handlelogIn(dataForm);
     }
 
     const handleInputEmail = (e) => setDataForm({...dataForm, email: e.target.value})
@@ -32,6 +69,7 @@ const SignIn = ({logIn}) => {
                 </div>
                 </fieldset>
                 <div className="mt3"><input className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6" type="submit" value="Sign In" onClick={handleSendForm}/></div>
+                {error && <div className="mt3 red">{error}</div>}
                 <div className="lh-copy mt3">
                     <Link className="f6 link dim black db" to="/register">Register</Link>
                 </div>
