@@ -126,9 +126,9 @@ class HomePage extends React.Component {
             return response.json();
         })
         .then(data => {
-            if(data === 'success')
+            if(data.status === 'success')
             {
-                this.setState((prevState) => ({userData:{...prevState.userData, entries: prevState.userData.entries + 1}}))
+                this.setState({userData: {...this.state.userData, entries: data.entries}})
             }
         })
     }

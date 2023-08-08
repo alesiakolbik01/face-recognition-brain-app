@@ -25,6 +25,7 @@ const App = () => {
 
   const logOut = () => {
     setIsLoggedIn(false);
+    setUserId(null);
   };
 
   return (
