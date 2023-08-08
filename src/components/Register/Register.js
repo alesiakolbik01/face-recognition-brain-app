@@ -45,6 +45,9 @@ const Register = ({registerUser}) => {
                 setError(data.error);
             }
         })
+        .catch(error => {
+            setError(error);
+        })
     }
 
     const handleInputName = (e) => {
