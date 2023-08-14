@@ -4,7 +4,7 @@ import {
   } from 'react-router-dom';
 
 
-const SignIn = ({ logIn }) => {
+const SignIn = ({ logIn, setUserSession }) => {
 
     const [dataForm, setDataForm] = useState({});
     const [error, setError] = useState('');
@@ -32,6 +32,7 @@ const SignIn = ({ logIn }) => {
             {
                 setError('');
                 logIn(true, data.userId);
+                setUserSession({ userId: data.userId })
             }
         })
         .catch((error) => {
@@ -61,11 +62,11 @@ const SignIn = ({ logIn }) => {
                 <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
                 <div className="mt3">
                     <label className="db fw4 lh-copy f6" htmlFor="email-address">Email address</label>
-                    <input className="pa2 input-reset ba bg-transparent w-100 measure" type="email" name="email-address"  id="email-address" onInput={handleInputEmail}/>
+                    <input className="pa2 input-reset ba bg-transparent w-100 measure" autoComplete="off" type="email" name="email-address"  id="email-address" onInput={handleInputEmail}/>
                 </div>
                 <div className="mt3">
                     <label className="db fw4 lh-copy f6" htmlFor="password">Password</label>
-                    <input className="b pa2 input-reset ba bg-transparent" type="password" name="password"  id="password" onInput={handleInputPassword}/>
+                    <input className="b pa2 input-reset ba bg-transparent" autoComplete="off" type="password" name="password"  id="password" onInput={handleInputPassword}/>
                 </div>
                 </fieldset>
                 <div className="mt3"><input className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6" type="submit" value="Sign In" onClick={handleSendForm}/></div>

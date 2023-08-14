@@ -2,7 +2,7 @@ import { useState } from "react";
 import ParticlesBg from "particles-bg";
 
 
-const Register = ({registerUser}) => {
+const Register = ({registerUser, setUserSession}) => {
 
     const [dataForm, setDataForm] = useState({});
     const [error, setError] = useState('');
@@ -39,6 +39,7 @@ const Register = ({registerUser}) => {
             if(data.status === "success")
             {
                 registerUser(true, data.insertedId);
+                setUserSession({ userId: data.insertedId })
             }
             else
             {
@@ -74,15 +75,15 @@ const Register = ({registerUser}) => {
                     <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
                     <div className="mt3">
                         <label className="db fw4 lh-copy f6" htmlFor="name">Name</label>
-                        <input className="pa2 input-reset ba bg-transparent w-100 measure" required type="text" name="name"  id="name" onInput={handleInputName}/>
+                        <input className="pa2 input-reset ba bg-transparent w-100 measure" autoComplete="off" required type="text" name="name"  id="name" onInput={handleInputName}/>
                     </div>
                     <div className="mt3">
                         <label className="db fw4 lh-copy f6" htmlFor="email-address">Email address</label>
-                        <input className="pa2 input-reset ba bg-transparent w-100 measure" required type="email" name="email-address"  id="email-address" onInput={handleInputEmail}/>
+                        <input className="pa2 input-reset ba bg-transparent w-100 measure" autoComplete="off" required type="email" name="email-address"  id="email-address" onInput={handleInputEmail}/>
                     </div>
                     <div className="mt3">
                         <label className="db fw4 lh-copy f6" htmlFor="password">Password</label>
-                        <input className="b pa2 input-reset ba bg-transparent" required type="password" name="password"  id="password" onInput={handleInputPassword}/>
+                        <input className="b pa2 input-reset ba bg-transparent" autoComplete="off" required type="password" name="password"  id="password" onInput={handleInputPassword}/>
                     </div>
                     </fieldset>
                     <div className="mt3"><input className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6" type="submit" value="Send" onClick={handleSendForm}/></div>

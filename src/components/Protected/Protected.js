@@ -1,9 +1,9 @@
 
 import LoginPage from "../LoginPage/LoginPage";
 
-const Protected = ({ isLoggedIn, children, logIn }) => {
+const Protected = ({ isLoggedIn, children, logIn, setUserSession }) => {
   if (!isLoggedIn) {
-    return <LoginPage logIn = {logIn}/>
+    return <LoginPage logIn = {logIn} setUserSession={setUserSession}/>
   }
   return children;
 };

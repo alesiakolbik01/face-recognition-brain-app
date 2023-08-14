@@ -7,16 +7,6 @@ import FaceRecognition from '../FaceRecognition/FaceRecognition';
 import ParticlesBg from 'particles-bg';
 import './HomePage.css'
 
-const clarifaiDataInit = {
-    API_KEY: '1df95d8e43544eeea5a8323f85dc6b24',
-    PAT: '731e0f2f1e0d441eb082a581d4d40459',
-    USER_ID: 'alesiakolbik',
-    APP_ID: 'test-faces-recognition',
-    MODEL_ID: 'face-detection',
-    MODEL_VERSION_ID: '6dc7e46bc9124c5c8824be4822abe105'
-  };
-  
-  
 class HomePage extends React.Component {
 
     constructor(props){
@@ -32,38 +22,17 @@ class HomePage extends React.Component {
         }
     }
 
-    getOptionsClarifai = (url) => {
-        const raw = JSON.stringify({
-            "user_app_id": {
-                "user_id": clarifaiDataInit.USER_ID,
-                "app_id": clarifaiDataInit.APP_ID
-            },
-            "inputs": [
-                {
-                    "data": {
-                        "image": {
-                            "url": url
-                        }
-                    }
-                }
-            ]
-        });
-
-        return {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': 'Key ' + clarifaiDataInit.PAT
-            },
-            body: raw
-        };
-    }
-
     onHandelSubmit = (value) => {
-        this.setState({imageUrl: value});
-        fetch("https://api.clarifai.com/v2/models/" + clarifaiDataInit.MODEL_ID + "/versions/" + clarifaiDataInit.MODEL_VERSION_ID + "/outputs", this.getOptionsClarifai(value))
+        fetch("http://localhost:3000/imageurl", 
+            {
+                method: 'post',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({imageUrl: value})
+            }
+        )
         .then(response => response.json())
         .then((result) => {
+                this.setState({imageUrl: value});
                 this.setBoxPoints(result.outputs[0].data.regions);
                 this.updateEntriesCount();
             }
