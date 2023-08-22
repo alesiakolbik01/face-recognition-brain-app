@@ -23,7 +23,7 @@ const Register = ({registerUser, setUserSession}) => {
     }
 
     const handleRegisterUser = () => {
-        fetch('http://localhost:3000/register', {
+        fetch('https://smart-brain-backend-f24l.onrender.com/register', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

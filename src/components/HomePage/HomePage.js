@@ -24,7 +24,7 @@ class HomePage extends React.Component {
 
     onHandelSubmit = (value) => {
         this.setState({imageUrl: value});
-        fetch("http://localhost:3000/imageurl", 
+        fetch("https://smart-brain-backend-f24l.onrender.com/imageurl", 
             {
                 method: 'post',
                 headers: {'Content-Type': 'application/json'},
@@ -65,7 +65,7 @@ class HomePage extends React.Component {
 
     componentDidMount(){
         if(this.props.userId){
-            fetch('http://localhost:3000/profile/'+ this.props.userId)
+            fetch('https://smart-brain-backend-f24l.onrender.com/profile/'+ this.props.userId)
             .then((response) => {
                 return response.json();
             })
@@ -86,7 +86,7 @@ class HomePage extends React.Component {
     }
 
     updateEntriesCount(){
-        fetch('http://localhost:3000/image', {
+        fetch('https://smart-brain-backend-f24l.onrender.com/image', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({id: this.props.userId})
