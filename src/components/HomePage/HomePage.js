@@ -23,6 +23,7 @@ class HomePage extends React.Component {
     }
 
     onHandelSubmit = (value) => {
+        this.setState({imageUrl: value});
         fetch("http://localhost:3000/imageurl", 
             {
                 method: 'post',
@@ -32,7 +33,6 @@ class HomePage extends React.Component {
         )
         .then(response => response.json())
         .then((result) => {
-                this.setState({imageUrl: value});
                 this.setBoxPoints(result.outputs[0].data.regions);
                 this.updateEntriesCount();
             }
@@ -106,14 +106,14 @@ class HomePage extends React.Component {
         const { boxData, imageUrl } = this.state;
         const { logOut } = this.props;
         return (
-        <div className = "home">
-            <ParticlesBg color = "#6e6e6e" type = "cobweb" bg = {true} />
-            <Navigation  logOut={ logOut }/>
-            <Logo />
-            <Rank userData={ this.state.userData }/>
-            <ImageLinkForm handleSubmit = {this.onHandelSubmit} />
-            <FaceRecognition imageUrl = {imageUrl} boxData = {boxData} />
-        </div>
+            <div className = "home">
+                <ParticlesBg color = "#6e6e6e" type = "cobweb" bg = {true} />
+                <Navigation  logOut={ logOut }/>
+                <Logo />
+                <Rank userData={ this.state.userData }/>
+                <ImageLinkForm handleSubmit = {this.onHandelSubmit} />
+                <FaceRecognition imageUrl = {imageUrl} boxData = {boxData} />
+            </div>
         );
     }
 }
